@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- AUTH PAGE (LOGIN/SIGNUP) -->
+    <div class="auth-page show" id="authPage">
+        <header class="auth-header">
+            <div class="auth-header-content">
+                <div class="auth-logo">LinkedIn</div>
+                <div>
+                    <span style="font-size: 14px; color: var(--text-secondary);">Already have an account? </span>
+                    <a onclick="showLogin()" style="color: var(--primary); font-weight: 600; cursor: pointer;">Sign in</a>
+                </div>
+            </div>
+        </header>
+        
+        <main class="auth-main">
+            <div class="auth-hero">
+                <h1>Welcome to your professional community</h1>
+                <div class="auth-illustration">👥💼🌐</div>
+            </div>
+            
+            <div class="auth-form-container">
+                <!-- LOGIN FORM -->
+                <div class="auth-card" id="loginForm">
+                    <h2>Sign in</h2>
+                    <div class="form-group">
+                        <label class="form-label">Email or phone</label>
+                        <input type="text" class="form-input" id="loginEmail" placeholder="Enter your email" onkeypress="handleLoginKeypress(event)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" onkeypress="handleLoginKeypress(event)">
+                    </div>
+                    <div class="error-message" id="loginError">Invalid email or password</div>
+                    <button class="auth-btn" onclick="handleLogin()">Sign in</button>
+                    
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <button class="google-btn" onclick="showToast('Google sign in coming soon')">
+                        <span>🔍</span> Sign in with Google
+                    </button>
+                    
+                    <button class="google-btn" onclick="openGitHubOAuth('login')" style="margin-top: 12px;">
+                        <span>🐙</span> Sign in with GitHub
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p>New to LinkedIn? <a onclick="showSignup()">Join now</a></p>
+                    </div>
+                </div>
+                
+                <!-- SIGNUP FORM -->
+                <div class="auth-card" id="signupForm" style="display: none;">
+                    <h2>Join LinkedIn</h2>
+                    <div class="form-group">
+                        <label class="form-label">First name</label>
+                        <input type="text" class="form-input" id="signupFirstName" placeholder="Enter your first name" onkeypress="handleSignupKeypress(event)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last name</label>
+                        <input type="text" class="form-input" id="signupLastName" placeholder="Enter your last name" onkeypress="handleSignupKeypress(event)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email" onkeypress="handleSignupKeypress(event)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password (6+ characters)</label>
+                        <input type="password" class="form-input" id="signupPassword" placeholder="Create a password" onkeypress="handleSignupKeypress(event)">
+                    </div>
+                    <div class="error-message" id="signupError">Please fill in all fields</div>
+                    <div class="success-message" id="signupSuccess">Account created successfully! Please sign in.</div>
+                    <p style="font-size: 12px; color: var(--text-secondary); margin: 16px 0;">
+                        By clicking Agree & Join, you agree to the LinkedIn <a style="color: var(--primary);">User Agreement</a>, 
+                        <a style="color: var(--primary);">Privacy Policy</a>, and <a style="color: var(--primary);">Cookie Policy</a>.
+                    </p>
+                    <button class="auth-btn" onclick="handleSignup()">Agree & Join</button>
+                    
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <button class="google-btn" onclick="showToast('Google sign up coming soon')">
+                        <span>🔍</span> Continue with Google
+                    </button>
+                    
+                    <button class="google-btn" onclick="openGitHubOAuth('signup')" style="margin-top: 12px;">
+                        <span>🐙</span> Continue with GitHub
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p>Already on LinkedIn? <a onclick="showLogin()">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer style="background: var(--white); padding: 16px; border-top: 1px solid var(--border);">
+            <div class="auth-links">
+                <a>About</a>
+                <a>Accessibility</a>
+                <a>User Agreement</a>
+                <a>Privacy Policy</a>
+                <a>Cookie Policy</a>
+                <a>Copyright Policy</a>
+                <a>Brand Policy</a>
+                <a>Guest Controls</a>
+                <a>Community Guidelines</a>
+            </div>
+            <p style="text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+                LinkedIn Corporation © 2024
+            </p>
+        </footer>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showFeed()">in</div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search" onkeyup="handleSearch(event)">
+            </div>
+            <div class="nav-links">
+                <a class="nav-link active" onclick="showFeed()">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a class="nav-link" onclick="showNetwork()">
+                    <span class="nav-icon">👥</span>
+                    <span>My Network</span>
+                </a>
+                <a class="nav-link" onclick="showJobs()">
+                    <span class="nav-icon">💼</span>
+                    <span>Jobs</span>
+                </a>
+                <a class="nav-link" onclick="showMessaging()">
+                    <span class="nav-icon">💬</span>
+                    <span>Messaging</span>
+                </a>
+                <a class="nav-link" onclick="showNotifications()">
+                    <span class="nav-icon">🔔</span>
+                    <span>Notifications</span>
+                </a>
+                <div class="dropdown">
+                    <a class="nav-link" onclick="toggleProfileDropdown()">
+                        <div class="nav-profile" id="navProfilePic">👤</div>
+                        <span>Me ▼</span>
+                    </a>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-item" onclick="showProfile()">
+                            <span>👤</span>
+                            <span>View Profile</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item" onclick="showSavedPosts()">
+                            <span>🔖</span>
+                            <span>Saved Posts</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+                            <span>🌙</span>
+                            <span>Dark Mode</span>
+                            <div class="toggle-switch" id="darkModeToggle"></div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item" onclick="logout()">
+                            <span>🚪</span>
+                            <span>Sign Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME / FEED PAGE -->
+    <div class="main-container" id="feedPage">
+        <!-- Left Sidebar -->
+        <aside class="left-sidebar">
+            <div class="card profile-card">
+                <div class="profile-banner"></div>
+                <div class="profile-avatar-large" onclick="showProfile()">👤</div>
+                <div class="profile-name" onclick="showProfile()">John Doe</div>
+                <div class="profile-headline">Software Engineer at Tech Company</div>
+                
+                <div class="stats-section">
+                    <div class="stat-item" onclick="showProfile()">
+                        <span class="stat-label">Who viewed your profile</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Impressions of your post</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                </div>
+                
+                <a class="sidebar-link">💎 Try Premium for $0</a>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-list-item">
+                    <span>🔖</span>
+                    <span>Saved items</span>
+                </div>
+                <div class="sidebar-list-item">
+                    <span>📰</span>
+                    <span>Newsletters</span>
+                </div>
+                <div class="sidebar-list-item">
+                    <span>📅</span>
+                    <span>Events</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-list-item text-primary font-bold">
+                    <span>＋</span>
+                    <span>Discover more</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Feed -->
+        <main class="main-feed" id="mainFeed">
+            <!-- Create Post -->
+            <div class="card create-post">
+                <div class="post-input">
+                    <div class="post-avatar">👤</div>
+                    <div class="post-input-field" onclick="openPostModal()">Start a post</div>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action" onclick="openPostModal()">
+                        <span class="action-icon">📷</span>
+                        <span>Photo</span>
+                    </div>
+                    <div class="post-action" onclick="openPostModal()">
+                        <span class="action-icon">🎥</span>
+                        <span>Video</span>
+                    </div>
+                    <div class="post-action" onclick="openPostModal()">
+                        <span class="action-icon">📅</span>
+                        <span>Event</span>
+                    </div>
+                    <div class="post-action" onclick="openPostModal()">
+                        <span class="action-icon">📝</span>
+                        <span>Write article</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feed Posts will be dynamically inserted here -->
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="card news-card">
+                <div class="news-header">
+                    <span>LinkedIn News</span>
+                    <span>ℹ️</span>
+                </div>
+                <div class="news-item">
+                    <div class="news-title" style="color: var(--text-secondary);">No news available</div>
+                </div>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="profile-page" id="profilePage">
+        <div class="profile-hero">
+            <div class="profile-hero-banner">
+                <button class="edit-banner-btn">📷 Edit banner</button>
+            </div>
+            <div class="profile-hero-content">
+                <div class="profile-hero-avatar">👤</div>
+                <h1>John Doe</h1>
+                <p style="font-size: 16px; margin: 8px 0;">Software Engineer at Tech Company</p>
+                <p style="font-size: 14px; color: var(--text-secondary);">San Francisco Bay Area • <span class="text-primary" style="cursor: pointer;">Contact info</span></p>
+                <p style="font-size: 14px; color: var(--primary); margin-top: 8px; cursor: pointer;" onclick="showNetwork()">0 connections</p>
+                
+                <div class="profile-hero-actions">
+                    <button class="btn btn-primary">✏️ Edit profile</button>
+                    <button class="btn btn-secondary">⚙️ More</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">
+                <h2 class="section-title">About</h2>
+                <span class="section-edit">✏️</span>
+            </div>
+            <p>Passionate software engineer with 5+ years of experience building scalable web applications. Specialized in JavaScript, React, Node.js, and cloud technologies. Love solving complex problems and contributing to open source projects.</p>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">
+                <h2 class="section-title">Experience</h2>
+                <span class="section-edit">➕</span>
+            </div>
+            <div class="experience-item">
+                <div class="experience-logo">💼</div>
+                <div class="experience-details">
+                    <h4>Senior Software Engineer</h4>
+                    <p>Tech Company</p>
+                    <p class="experience-date">Jan 2021 - Present • 3 yrs</p>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">Leading a team of 5 engineers building microservices architecture. Improved system performance by 40%.</p>
+                </div>
+            </div>
+            <div class="experience-item">
+                <div class="experience-logo">🚀</div>
+                <div class="experience-details">
+                    <h4>Software Engineer</h4>
+                    <p>Startup Inc.</p>
+                    <p class="experience-date">Jun 2018 - Dec 2020 • 2.5 yrs</p>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">Built the core platform from scratch. Helped grow the user base from 1K to 100K.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">
+                <h2 class="section-title">Education</h2>
+                <span class="section-edit">➕</span>
+            </div>
+            <div class="education-item">
+                <div class="education-logo">🎓</div>
+                <div class="education-details">
+                    <h4>Stanford University</h4>
+                    <p>Master of Science in Computer Science</p>
+                    <p class="education-date">2016 - 2018</p>
+                </div>
+            </div>
+            <div class="education-item">
+                <div class="education-logo">📚</div>
+                <div class="education-details">
+                    <h4>UC Berkeley</h4>
+                    <p>Bachelor of Science in Computer Engineering</p>
+                    <p class="education-date">2012 - 2016</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">
+                <h2 class="section-title">Skills</h2>
+                <span class="section-edit">➕</span>
+            </div>
+            <div class="skills-list">
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">TypeScript</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">AWS</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">Kubernetes</span>
+                <span class="skill-tag">GraphQL</span>
+                <span class="skill-tag">MongoDB</span>
+            </div>
+            <div style="margin-top: 16px;">
+                <p style="font-size: 14px; color: var(--text-secondary);">Show all 25 skills →</p>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">
+                <h2 class="section-title">Recommendations</h2>
+            </div>
+            <p style="font-size: 14px; color: var(--text-secondary);">John has received 8 recommendations. <span class="text-primary" style="cursor: pointer;">View all</span></p>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">
+                <h2 class="section-title">Accomplishments</h2>
+            </div>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 24px;">🏆</span>
+                    <div>
+                        <p style="font-weight: 600;">3</p>
+                        <p style="font-size: 12px; color: var(--text-secondary);">Honors & Awards</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 24px;">📜</span>
+                    <div>
+                        <p style="font-weight: 600;">5</p>
+                        <p style="font-size: 12px; color: var(--text-secondary);">Certifications</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 24px;">🌍</span>
+                    <div>
+                        <p style="font-weight: 600;">2</p>
+                        <p style="font-size: 12px; color: var(--text-secondary);">Languages</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NETWORK PAGE -->
+    <div class="network-page" id="networkPage">
+        <div class="network-tabs">
+            <div class="network-tab active" onclick="switchNetworkTab(this, 'connections')">Connections (0)</div>
+            <div class="network-tab" onclick="switchNetworkTab(this, 'pending')">Pending (0)</div>
+            <div class="network-tab" onclick="switchNetworkTab(this, 'suggestions')">Suggestions (0)</div>
+        </div>
+
+        <div class="network-grid" id="networkGrid">
+            <!-- Connection cards will be dynamically generated -->
+        </div>
+    </div>
+
+    <!-- JOBS PAGE -->
+    <div class="jobs-page" id="jobsPage">
+        <aside class="jobs-sidebar">
+            <div class="job-filters">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Show results by</h3>
+                <div class="filter-item">
+                    <span class="filter-icon">💼</span>
+                    <span>My Jobs</span>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-icon">🔔</span>
+                    <span>Job Alerts</span>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-icon">💰</span>
+                    <span>Salary</span>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-icon">📋</span>
+                    <span>Skills Assessments</span>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-icon">📄</span>
+                    <span>Resume Builder</span>
+                </div>
+                <div class="filter-item">
+                    <span class="filter-icon">📊</span>
+                    <span>Interview Prep</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="jobs-list" id="jobsList">
+            <div class="search-box" style="max-width: 100%; margin-bottom: 16px;">
+                <input type="text" placeholder="Search by title, skill, or company" style="width: 100%; padding: 12px;">
+            </div>
+            <!-- Job cards will be dynamically generated -->
+        </main>
+    </div>
+
+    <!-- MESSAGING PAGE -->
+    <div class="messaging-page" id="messagingPage">
+        <aside class="messaging-sidebar">
+            <div class="messaging-header">
+                <h3 class="messaging-title">Messaging</h3>
+            </div>
+            <div class="messaging-search">
+                <input type="text" placeholder="Search messages">
+            </div>
+            <div class="conversation-list" id="conversationList">
+                <!-- Conversations will be dynamically generated -->
+            </div>
+        </aside>
+        <main class="messaging-main" id="messagingMain">
+            <div class="chat-header">
+                <div class="conversation-avatar">�</div>
+                <div>
+                    <div class="conversation-name">Select a conversation</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">No messages</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- No messages yet -->
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Write a message..." onkeypress="handleChatKeypress(event)">
+                <button class="chat-send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- NOTIFICATIONS PAGE -->
+    <div class="notifications-page" id="notificationsPage">
+        <div class="notification-tabs" style="border-bottom: 1px solid var(--border); margin-bottom: 16px;">
+            <div class="network-tab active" style="padding-left: 0;">All (0)</div>
+            <div class="network-tab">My posts</div>
+            <div class="network-tab">Mentions</div>
+        </div>
+        <div id="notificationsList">
+            <!-- Notifications will be dynamically generated -->
+        </div>
+    </div>
+
+    <!-- SEARCH RESULTS -->
+    <div class="search-results" id="searchResults">
+        <div class="search-filter-bar">
+            <button class="search-filter active">All</button>
+            <button class="search-filter">People</button>
+            <button class="search-filter">Jobs</button>
+            <button class="search-filter">Posts</button>
+            <button class="search-filter">Companies</button>
+        </div>
+        <div id="searchResultsList">
+            <!-- Search results will be dynamically generated -->
+        </div>
+    </div>
+
+    <!-- POST MODAL -->
+    <div class="modal-overlay" id="postModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Create a post</h3>
+                <span class="modal-close" onclick="closePostModal()">✕</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <div class="post-avatar" id="postModalAvatar">👤</div>
+                    <div>
+                        <div style="font-weight: 600;" id="postModalName">John Doe</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">🌐 Anyone</div>
+                    </div>
+                </div>
+                <textarea class="modal-textarea" id="postTextarea" placeholder="What do you want to talk about?" oninput="updatePostButton()"></textarea>
+                <div class="image-preview-container" id="imagePreviewContainer">
+                    <img class="image-preview" id="imagePreview" src="" alt="Preview">
+                    <button class="remove-image-btn" onclick="removeSelectedImage()" title="Remove image">✕</button>
+                </div>
+                <div class="video-preview-container" id="videoPreviewContainer">
+                    <video class="video-preview" id="videoPreview" controls></video>
+                    <button class="remove-image-btn" onclick="removeSelectedVideo()" title="Remove video">✕</button>
+                </div>
+                <div class="html-preview-container" id="htmlPreviewContainer">
+                    <div class="html-preview-header">
+                        <span class="html-preview-title">
+                            <span>🌐</span>
+                            <span id="htmlFileName">website.html</span>
+                        </span>
+                    </div>
+                    <iframe class="website-iframe" id="htmlPreview" sandbox="allow-scripts allow-same-origin"></iframe>
+                    <button class="remove-image-btn" onclick="removeSelectedHtml()" title="Remove website" style="top: 40px;">✕</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <input type="file" id="postImageInput" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
+                    <input type="file" id="postVideoInput" accept="video/*" style="display: none;" onchange="handleVideoSelect(event)">
+                    <button class="modal-action-btn" title="Add photo" onclick="document.getElementById('postImageInput').click()">📷</button>
+                    <button class="modal-action-btn" title="Add video" onclick="document.getElementById('postVideoInput').click()">🎥</button>
+                    <input type="file" id="postHtmlInput" accept=".html,.htm,.txt" style="display: none;" onchange="handleHtmlSelect(event)">
+                    <button class="modal-action-btn" title="Add website/HTML file" onclick="document.getElementById('postHtmlInput').click()">📄</button>
+                    <button class="modal-action-btn" title="Add emoji" onclick="toggleEmojiPicker('postTextarea', this)">😊</button>
+                    <button class="modal-action-btn" title="More options" onclick="showToast('More options coming soon')">⋯</button>
+                </div>
+                <button class="post-submit-btn" id="postSubmitBtn" onclick="submitPost()" disabled>Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMOJI PICKER -->
+    <div class="emoji-picker" id="emojiPicker">
+        <div class="emoji-picker-header">
+            <span class="emoji-tab active" onclick="switchEmojiTab('smileys')">😀</span>
+            <span class="emoji-tab" onclick="switchEmojiTab('people')">👋</span>
+            <span class="emoji-tab" onclick="switchEmojiTab('animals')">🐱</span>
+            <span class="emoji-tab" onclick="switchEmojiTab('food')">🍎</span>
+            <span class="emoji-tab" onclick="switchEmojiTab('activities')">⚽</span>
+            <span class="emoji-tab" onclick="switchEmojiTab('travel')">🚗</span>
+            <span class="emoji-tab" onclick="switchEmojiTab('objects')">💡</span>
+            <span class="emoji-tab" onclick="switchEmojiTab('symbols')">❤️</span>
+        </div>
+        <div class="emoji-content" id="emojiContent">
+            <!-- Smileys -->
+            <div class="emoji-section active" data-category="smileys">
+                <span class="emoji-item" onclick="insertEmoji('😀')">😀</span>
+                <span class="emoji-item" onclick="insertEmoji('😃')">😃</span>
+                <span class="emoji-item" onclick="insertEmoji('😄')">😄</span>
+                <span class="emoji-item" onclick="insertEmoji('😁')">😁</span>
+                <span class="emoji-item" onclick="insertEmoji('😆')">😆</span>
+                <span class="emoji-item" onclick="insertEmoji('😅')">😅</span>
+                <span class="emoji-item" onclick="insertEmoji('🤣')">🤣</span>
+                <span class="emoji-item" onclick="insertEmoji('😂')">😂</span>
+                <span class="emoji-item" onclick="insertEmoji('🙂')">🙂</span>
+                <span class="emoji-item" onclick="insertEmoji('🙃')">🙃</span>
+                <span class="emoji-item" onclick="insertEmoji('😉')">😉</span>
+                <span class="emoji-item" onclick="insertEmoji('😊')">😊</span>
+                <span class="emoji-item" onclick="insertEmoji('😇')">😇</span>
+                <span class="emoji-item" onclick="insertEmoji('🥰')">🥰</span>
+                <span class="emoji-item" onclick="insertEmoji('😍')">😍</span>
+                <span class="emoji-item" onclick="insertEmoji('🤩')">🤩</span>
+                <span class="emoji-item" onclick="insertEmoji('😘')">😘</span>
+                <span class="emoji-item" onclick="insertEmoji('😗')">😗</span>
+                <span class="emoji-item" onclick="insertEmoji('😚')">😚</span>
+                <span class="emoji-item" onclick="insertEmoji('😙')">😙</span>
+                <span class="emoji-item" onclick="insertEmoji('🥲')">🥲</span>
+                <span class="emoji-item" onclick="insertEmoji('😋')">😋</span>
+                <span class="emoji-item" onclick="insertEmoji('😛')">😛</span>
+                <span class="emoji-item" onclick="insertEmoji('😜')">😜</span>
+                <span class="emoji-item" onclick="insertEmoji('🤪')">🤪</span>
+                <span class="emoji-item" onclick="insertEmoji('😝')">😝</span>
+                <span class="emoji-item" onclick="insertEmoji('🤑')">🤑</span>
+                <span class="emoji-item" onclick="insertEmoji('🤗')">🤗</span>
+                <span class="emoji-item" onclick="insertEmoji('🤭')">🤭</span>
+                <span class="emoji-item" onclick="insertEmoji('🤫')">🤫</span>
+                <span class="emoji-item" onclick="insertEmoji('🤔')">🤔</span>
+                <span class="emoji-item" onclick="insertEmoji('🤐')">🤐</span>
+                <span class="emoji-item" onclick="insertEmoji('🤨')">🤨</span>
+                <span class="emoji-item" onclick="insertEmoji('😐')">😐</span>
+                <span class="emoji-item" onclick="insertEmoji('😑')">😑</span>
+                <span class="emoji-item" onclick="insertEmoji('😶')">😶</span>
+                <span class="emoji-item" onclick="insertEmoji('😏')">😏</span>
+                <span class="emoji-item" onclick="insertEmoji('😒')">😒</span>
+                <span class="emoji-item" onclick="insertEmoji('🙄')">🙄</span>
+                <span class="emoji-item" onclick="insertEmoji('😬')">😬</span>
+                <span class="emoji-item" onclick="insertEmoji('🤥')">🤥</span>
+            </div>
+            <!-- People -->
+            <div class="emoji-section" data-category="people">
+                <span class="emoji-item" onclick="insertEmoji('👋')">👋</span>
+                <span class="emoji-item" onclick="insertEmoji('🤚')">🤚</span>
+                <span class="emoji-item" onclick="insertEmoji('🖐️')">🖐️</span>
+                <span class="emoji-item" onclick="insertEmoji('✋')">✋</span>
+                <span class="emoji-item" onclick="insertEmoji('🖖')">🖖</span>
+                <span class="emoji-item" onclick="insertEmoji('👌')">👌</span>
+                <span class="emoji-item" onclick="insertEmoji('🤌')">🤌</span>
+                <span class="emoji-item" onclick="insertEmoji('🤏')">🤏</span>
+                <span class="emoji-item" onclick="insertEmoji('✌️')">✌️</span>
+                <span class="emoji-item" onclick="insertEmoji('🤞')">🤞</span>
+                <span class="emoji-item" onclick="insertEmoji('🤟')">🤟</span>
+                <span class="emoji-item" onclick="insertEmoji('🤘')">🤘</span>
+                <span class="emoji-item" onclick="insertEmoji('🤙')">🤙</span>
+                <span class="emoji-item" onclick="insertEmoji('👈')">👈</span>
+                <span class="emoji-item" onclick="insertEmoji('👉')">👉</span>
+                <span class="emoji-item" onclick="insertEmoji('👆')">👆</span>
+                <span class="emoji-item" onclick="insertEmoji('🖕')">🖕</span>
+                <span class="emoji-item" onclick="insertEmoji('👇')">👇</span>
+                <span class="emoji-item" onclick="insertEmoji('☝️')">☝️</span>
+                <span class="emoji-item" onclick="insertEmoji('👍')">👍</span>
+                <span class="emoji-item" onclick="insertEmoji('👎')">👎</span>
+                <span class="emoji-item" onclick="insertEmoji('✊')">✊</span>
+                <span class="emoji-item" onclick="insertEmoji('👊')">👊</span>
+                <span class="emoji-item" onclick="insertEmoji('🤛')">🤛</span>
+                <span class="emoji-item" onclick="insertEmoji('🤜')">🤜</span>
+                <span class="emoji-item" onclick="insertEmoji('👏')">👏</span>
+                <span class="emoji-item" onclick="insertEmoji('🙌')">🙌</span>
+                <span class="emoji-item" onclick="insertEmoji('👐')">👐</span>
+                <span class="emoji-item" onclick="insertEmoji('🤲')">🤲</span>
+                <span class="emoji-item" onclick="insertEmoji('🤝')">🤝</span>
+                <span class="emoji-item" onclick="insertEmoji('🙏')">🙏</span>
+                <span class="emoji-item" onclick="insertEmoji('💪')">💪</span>
+                <span class="emoji-item" onclick="insertEmoji('🦾')">🦾</span>
+                <span class="emoji-item" onclick="insertEmoji('🦿')">🦿</span>
+                <span class="emoji-item" onclick="insertEmoji('🦵')">🦵</span>
+                <span class="emoji-item" onclick="insertEmoji('🦶')">🦶</span>
+                <span class="emoji-item" onclick="insertEmoji('👂')">👂</span>
+                <span class="emoji-item" onclick="insertEmoji('🦻')">🦻</span>
+                <span class="emoji-item" onclick="insertEmoji('👃')">👃</span>
+                <span class="emoji-item" onclick="insertEmoji('🧠')">🧠</span>
+            </div>
+            <!-- Animals -->
+            <div class="emoji-section" data-category="animals">
+                <span class="emoji-item" onclick="insertEmoji('🐶')">🐶</span>
+                <span class="emoji-item" onclick="insertEmoji('🐱')">🐱</span>
+                <span class="emoji-item" onclick="insertEmoji('🐭')">🐭</span>
+                <span class="emoji-item" onclick="insertEmoji('🐹')">🐹</span>
+                <span class="emoji-item" onclick="insertEmoji('🐰')">🐰</span>
+                <span class="emoji-item" onclick="insertEmoji('🦊')">🦊</span>
+                <span class="emoji-item" onclick="insertEmoji('🐻')">🐻</span>
+                <span class="emoji-item" onclick="insertEmoji('🐼')">🐼</span>
+                <span class="emoji-item" onclick="insertEmoji('🐨')">🐨</span>
+                <span class="emoji-item" onclick="insertEmoji('🐯')">🐯</span>
+                <span class="emoji-item" onclick="insertEmoji('🦁')">🦁</span>
+                <span class="emoji-item" onclick="insertEmoji('🐮')">🐮</span>
+                <span class="emoji-item" onclick="insertEmoji('🐷')">🐷</span>
+                <span class="emoji-item" onclick="insertEmoji('🐽')">🐽</span>
+                <span class="emoji-item" onclick="insertEmoji('🐸')">🐸</span>
+                <span class="emoji-item" onclick="insertEmoji('🐵')">🐵</span>
+                <span class="emoji-item" onclick="insertEmoji('🐔')">🐔</span>
+                <span class="emoji-item" onclick="insertEmoji('🐧')">🐧</span>
+                <span class="emoji-item" onclick="insertEmoji('🐦')">🐦</span>
+                <span class="emoji-item" onclick="insertEmoji('🐤')">🐤</span>
+                <span class="emoji-item" onclick="insertEmoji('🦆')">🦆</span>
+                <span class="emoji-item" onclick="insertEmoji('🦅')">🦅</span>
+                <span class="emoji-item" onclick="insertEmoji('🦉')">🦉</span>
+                <span class="emoji-item" onclick="insertEmoji('🦇')">🦇</span>
+                <span class="emoji-item" onclick="insertEmoji('🐺')">🐺</span>
+                <span class="emoji-item" onclick="insertEmoji('🐗')">🐗</span>
+                <span class="emoji-item" onclick="insertEmoji('🐴')">🐴</span>
+                <span class="emoji-item" onclick="insertEmoji('🦄')">🦄</span>
+                <span class="emoji-item" onclick="insertEmoji('🐝')">🐝</span>
+                <span class="emoji-item" onclick="insertEmoji('🐛')">🐛</span>
+                <span class="emoji-item" onclick="insertEmoji('🦋')">🦋</span>
+                <span class="emoji-item" onclick="insertEmoji('🐌')">🐌</span>
+                <span class="emoji-item" onclick="insertEmoji('🐞')">🐞</span>
+                <span class="emoji-item" onclick="insertEmoji('🐜')">🐜</span>
+                <span class="emoji-item" onclick="insertEmoji('🦟')">🦟</span>
+                <span class="emoji-item" onclick="insertEmoji('🦗')">🦗</span>
+                <span class="emoji-item" onclick="insertEmoji('🕷️')">🕷️</span>
+                <span class="emoji-item" onclick="insertEmoji('🦂')">🦂</span>
+                <span class="emoji-item" onclick="insertEmoji('🐢')">🐢</span>
+                <span class="emoji-item" onclick="insertEmoji('🐍')">🐍</span>
+                <span class="emoji-item" onclick="insertEmoji('🦎')">🦎</span>
+                <span class="emoji-item" onclick="insertEmoji('🦖')">🦖</span>
+                <span class="emoji-item" onclick="insertEmoji('🦕')">🦕</span>
+            </div>
+            <!-- Food -->
+            <div class="emoji-section" data-category="food">
+                <span class="emoji-item" onclick="insertEmoji('🍏')">🍏</span>
+                <span class="emoji-item" onclick="insertEmoji('🍎')">🍎</span>
+                <span class="emoji-item" onclick="insertEmoji('🍐')">🍐</span>
+                <span class="emoji-item" onclick="insertEmoji('🍊')">🍊</span>
+                <span class="emoji-item" onclick="insertEmoji('🍋')">🍋</span>
+                <span class="emoji-item" onclick="insertEmoji('🍌')">🍌</span>
+                <span class="emoji-item" onclick="insertEmoji('🍉')">🍉</span>
+                <span class="emoji-item" onclick="insertEmoji('🍇')">🍇</span>
+                <span class="emoji-item" onclick="insertEmoji('🍓')">🍓</span>
+                <span class="emoji-item" onclick="insertEmoji('🫐')">🫐</span>
+                <span class="emoji-item" onclick="insertEmoji('🍈')">🍈</span>
+                <span class="emoji-item" onclick="insertEmoji('🍒')">🍒</span>
+                <span class="emoji-item" onclick="insertEmoji('🍑')">🍑</span>
+                <span class="emoji-item" onclick="insertEmoji('🍍')">🍍</span>
+                <span class="emoji-item" onclick="insertEmoji('🥝')">🥝</span>
+                <span class="emoji-item" onclick="insertEmoji('🥥')">🥥</span>
+                <span class="emoji-item" onclick="insertEmoji('🥑')">🥑</span>
+                <span class="emoji-item" onclick="insertEmoji('🍆')">🍆</span>
+                <span class="emoji-item" onclick="insertEmoji('🍅')">🍅</span>
+                <span class="emoji-item" onclick="insertEmoji('🥦')">🥦</span>
+                <span class="emoji-item" onclick="insertEmoji('🥬')">🥬</span>
+                <span class="emoji-item" onclick="insertEmoji('🥒')">🥒</span>
+                <span class="emoji-item" onclick="insertEmoji('🌶️')">🌶️</span>
+                <span class="emoji-item" onclick="insertEmoji('🫑')">🫑</span>
+                <span class="emoji-item" onclick="insertEmoji('🌽')">🌽</span>
+                <span class="emoji-item" onclick="insertEmoji('🥕')">🥕</span>
+                <span class="emoji-item" onclick="insertEmoji('🧅')">🧅</span>
+                <span class="emoji-item" onclick="insertEmoji('🥔')">🥔</span>
+                <span class="emoji-item" onclick="insertEmoji('🍠')">🍠</span>
+                <span class="emoji-item" onclick="insertEmoji('🥐')">🥐</span>
+                <span class="emoji-item" onclick="insertEmoji('🥯')">🥯</span>
+                <span class="emoji-item" onclick="insertEmoji('🍞')">🍞</span>
+                <span class="emoji-item" onclick="insertEmoji('🥖')">🥖</span>
+                <span class="emoji-item" onclick="insertEmoji('🥨')">🥨</span>
+                <span class="emoji-item" onclick="insertEmoji('🧀')">🧀</span>
+                <span class="emoji-item" onclick="insertEmoji('🥚')">🥚</span>
+                <span class="emoji-item" onclick="insertEmoji('🍳')">🍳</span>
+                <span class="emoji-item" onclick="insertEmoji('🧈')">🧈</span>
+                <span class="emoji-item" onclick="insertEmoji('🥞')">🥞</span>
+                <span class="emoji-item" onclick="insertEmoji('🧇')">🧇</span>
+                <span class="emoji-item" onclick="insertEmoji('🥓')">🥓</span>
+                <span class="emoji-item" onclick="insertEmoji('🥩')">🥩</span>
+                <span class="emoji-item" onclick="insertEmoji('🍗')">🍗</span>
+            </div>
+            <!-- Activities -->
+            <div class="emoji-section" data-category="activities">
+                <span class="emoji-item" onclick="insertEmoji('⚽')">⚽</span>
+                <span class="emoji-item" onclick="insertEmoji('🏀')">🏀</span>
+                <span class="emoji-item" onclick="insertEmoji('🏈')">🏈</span>
+                <span class="emoji-item" onclick="insertEmoji('⚾')">⚾</span>
+                <span class="emoji-item" onclick="insertEmoji('🥎')">🥎</span>
+                <span class="emoji-item" onclick="insertEmoji('🎾')">🎾</span>
+                <span class="emoji-item" onclick="insertEmoji('🏐')">🏐</span>
+                <span class="emoji-item" onclick="insertEmoji('🏉')">🏉</span>
+                <span class="emoji-item" onclick="insertEmoji('🥏')">🥏</span>
+                <span class="emoji-item" onclick="insertEmoji('🎱')">🎱</span>
+                <span class="emoji-item" onclick="insertEmoji('🪀')">🪀</span>
+                <span class="emoji-item" onclick="insertEmoji('🏓')">🏓</span>
+                <span class="emoji-item" onclick="insertEmoji('🏸')">🏸</span>
+                <span class="emoji-item" onclick="insertEmoji('🏒')">🏒</span>
+                <span class="emoji-item" onclick="insertEmoji('🏑')">🏑</span>
+                <span class="emoji-item" onclick="insertEmoji('🥍')">🥍</span>
+                <span class="emoji-item" onclick="insertEmoji('🏏')">🏏</span>
+                <span class="emoji-item" onclick="insertEmoji('🥅')">🥅</span>
+                <span class="emoji-item" onclick="insertEmoji('⛳')">⛳</span>
+                <span class="emoji-item" onclick="insertEmoji('🏹')">🏹</span>
+                <span class="emoji-item" onclick="insertEmoji('🎣')">🎣</span>
+                <span class="emoji-item" onclick="insertEmoji('🤿')">🤿</span>
+                <span class="emoji-item" onclick="insertEmoji('🥊')">🥊</span>
+                <span class="emoji-item" onclick="insertEmoji('🥋')">🥋</span>
+                <span class="emoji-item" onclick="insertEmoji('🎽')">🎽</span>
+                <span class="emoji-item" onclick="insertEmoji('🛹')">🛹</span>
+                <span class="emoji-item" onclick="insertEmoji('🛼')">🛼</span>
+                <span class="emoji-item" onclick="insertEmoji('🛷')">🛷</span>
+                <span class="emoji-item" onclick="insertEmoji('⛸️')">⛸️</span>
+                <span class="emoji-item" onclick="insertEmoji('🥌')">🥌</span>
+                <span class="emoji-item" onclick="insertEmoji('🎿')">🎿</span>
+                <span class="emoji-item" onclick="insertEmoji('⛷️')">⛷️</span>
+                <span class="emoji-item" onclick="insertEmoji('🏂')">🏂</span>
+                <span class="emoji-item" onclick="insertEmoji('🏋️')">🏋️</span>
+                <span class="emoji-item" onclick="insertEmoji('🤼')">🤼</span>
+                <span class="emoji-item" onclick="insertEmoji('🤸')">🤸</span>
+                <span class="emoji-item" onclick="insertEmoji('⛹️')">⛹️</span>
+                <span class="emoji-item" onclick="insertEmoji('🤺')">🤺</span>
+                <span class="emoji-item" onclick="insertEmoji('🤾')">🤾</span>
+                <span class="emoji-item" onclick="insertEmoji('🏌️')">🏌️</span>
+                <span class="emoji-item" onclick="insertEmoji('🏇')">🏇</span>
+                <span class="emoji-item" onclick="insertEmoji('🧘')">🧘</span>
+                <span class="emoji-item" onclick="insertEmoji('🏄')">🏄</span>
+                <span class="emoji-item" onclick="insertEmoji('🏊')">🏊</span>
+                <span class="emoji-item" onclick="insertEmoji('🤽')">🤽</span>
+            </div>
+            <!-- Travel -->
+            <div class="emoji-section" data-category="travel">
+                <span class="emoji-item" onclick="insertEmoji('🚗')">🚗</span>
+                <span class="emoji-item" onclick="insertEmoji('🚕')">🚕</span>
+                <span class="emoji-item" onclick="insertEmoji('🚙')">🚙</span>
+                <span class="emoji-item" onclick="insertEmoji('🚌')">🚌</span>
+                <span class="emoji-item" onclick="insertEmoji('🚎')">🚎</span>
+                <span class="emoji-item" onclick="insertEmoji('🏎️')">🏎️</span>
+                <span class="emoji-item" onclick="insertEmoji('🚓')">🚓</span>
+                <span class="emoji-item" onclick="insertEmoji('🚑')">🚑</span>
+                <span class="emoji-item" onclick="insertEmoji('🚒')">🚒</span>
+                <span class="emoji-item" onclick="insertEmoji('🚐')">🚐</span>
+                <span class="emoji-item" onclick="insertEmoji('🚚')">🚚</span>
+                <span class="emoji-item" onclick="insertEmoji('🚛')">🚛</span>
+                <span class="emoji-item" onclick="insertEmoji('🚜')">🚜</span>
+                <span class="emoji-item" onclick="insertEmoji('🦯')">🦯</span>
+                <span class="emoji-item" onclick="insertEmoji('🦽')">🦽</span>
+                <span class="emoji-item" onclick="insertEmoji('🦼')">🦼</span>
+                <span class="emoji-item" onclick="insertEmoji('🛴')">🛴</span>
+                <span class="emoji-item" onclick="insertEmoji('🚲')">🚲</span>
+                <span class="emoji-item" onclick="insertEmoji('🛵')">🛵</span>
+                <span class="emoji-item" onclick="insertEmoji('🏍️')">🏍️</span>
+                <span class="emoji-item" onclick="insertEmoji('🛺')">🛺</span>
+                <span class="emoji-item" onclick="insertEmoji('🚨')">🚨</span>
+                <span class="emoji-item" onclick="insertEmoji('🚔')">🚔</span>
+                <span class="emoji-item" onclick="insertEmoji('🚍')">🚍</span>
+                <span class="emoji-item" onclick="insertEmoji('🚘')">🚘</span>
+                <span class="emoji-item" onclick="insertEmoji('🚖')">🚖</span>
+                <span class="emoji-item" onclick="insertEmoji('✈️')">✈️</span>
+                <span class="emoji-item" onclick="insertEmoji('🛩️')">🛩️</span>
+                <span class="emoji-item" onclick="insertEmoji('🛫')">🛫</span>
+                <span class="emoji-item" onclick="insertEmoji('🛬')">🛬</span>
+                <span class="emoji-item" onclick="insertEmoji('🪂')">🪂</span>
+                <span class="emoji-item" onclick="insertEmoji('💺')">💺</span>
+                <span class="emoji-item" onclick="insertEmoji('🚁')">🚁</span>
+                <span class="emoji-item" onclick="insertEmoji('🚟')">🚟</span>
+                <span class="emoji-item" onclick="insertEmoji('🚠')">🚠</span>
+                <span class="emoji-item" onclick="insertEmoji('🚡')">🚡</span>
+                <span class="emoji-item" onclick="insertEmoji('🛰️')">🛰️</span>
+                <span class="emoji-item" onclick="insertEmoji('🚀')">🚀</span>
+                <span class="emoji-item" onclick="insertEmoji('🛸')">🛸</span>
+                <span class="emoji-item" onclick="insertEmoji('🌍')">🌍</span>
+                <span class="emoji-item" onclick="insertEmoji('🌎')">🌎</span>
+                <span class="emoji-item" onclick="insertEmoji('🌏')">🌏</span>
+            </div>
+            <!-- Objects -->
+            <div class="emoji-section" data-category="objects">
+                <span class="emoji-item" onclick="insertEmoji('💡')">💡</span>
+                <span class="emoji-item" onclick="insertEmoji('🔦')">🔦</span>
+                <span class="emoji-item" onclick="insertEmoji('🏮')">🏮</span>
+                <span class="emoji-item" onclick="insertEmoji('🧱')">🧱</span>
+                <span class="emoji-item" onclick="insertEmoji('🪨')">🪨</span>
+                <span class="emoji-item" onclick="insertEmoji('🪵')">🪵</span>
+                <span class="emoji-item" onclick="insertEmoji('🛏️')">🛏️</span>
+                <span class="emoji-item" onclick="insertEmoji('🛋️')">🛋️</span>
+                <span class="emoji-item" onclick="insertEmoji('🪑')">🪑</span>
+                <span class="emoji-item" onclick="insertEmoji('🚽')">🚽</span>
+                <span class="emoji-item" onclick="insertEmoji('🪠')">🪠</span>
+                <span class="emoji-item" onclick="insertEmoji('🚿')">🚿</span>
+                <span class="emoji-item" onclick="insertEmoji('🛁')">🛁</span>
+                <span class="emoji-item" onclick="insertEmoji('🪤')">🪤</span>
+                <span class="emoji-item" onclick="insertEmoji('🪒')">🪒</span>
+                <span class="emoji-item" onclick="insertEmoji('🧴')">🧴</span>
+                <span class="emoji-item" onclick="insertEmoji('🧷')">🧷</span>
+                <span class="emoji-item" onclick="insertEmoji('🧹')">🧹</span>
+                <span class="emoji-item" onclick="insertEmoji('🧺')">🧺</span>
+                <span class="emoji-item" onclick="insertEmoji('🧻')">🧻</span>
+                <span class="emoji-item" onclick="insertEmoji('🪣')">🪣</span>
+                <span class="emoji-item" onclick="insertEmoji('🧼')">🧼</span>
+                <span class="emoji-item" onclick="insertEmoji('🪥')">🪥</span>
+                <span class="emoji-item" onclick="insertEmoji('🧽')">🧽</span>
+                <span class="emoji-item" onclick="insertEmoji('🧯')">🧯</span>
+                <span class="emoji-item" onclick="insertEmoji('🛒')">🛒</span>
+                <span class="emoji-item" onclick="insertEmoji('🚬')">🚬</span>
+                <span class="emoji-item" onclick="insertEmoji('⚰️')">⚰️</span>
+                <span class="emoji-item" onclick="insertEmoji('⚱️')">⚱️</span>
+                <span class="emoji-item" onclick="insertEmoji('🗿')">🗿</span>
+                <span class="emoji-item" onclick="insertEmoji('🪦')">🪦</span>
+                <span class="emoji-item" onclick="insertEmoji('🧰')">🧰</span>
+                <span class="emoji-item" onclick="insertEmoji('🧲')">🧲</span>
+                <span class="emoji-item" onclick="insertEmoji('🧪')">🧪</span>
+                <span class="emoji-item" onclick="insertEmoji('🧬')">🧬</span>
+                <span class="emoji-item" onclick="insertEmoji('🔬')">🔬</span>
+                <span class="emoji-item" onclick="insertEmoji('🔭')">🔭</span>
+                <span class="emoji-item" onclick="insertEmoji('📡')">📡</span>
+                <span class="emoji-item" onclick="insertEmoji('💉')">💉</span>
+                <span class="emoji-item" onclick="insertEmoji('🩸')">🩸</span>
+                <span class="emoji-item" onclick="insertEmoji('💊')">💊</span>
+                <span class="emoji-item" onclick="insertEmoji('🩹')">🩹</span>
+                <span class="emoji-item" onclick="insertEmoji('🩺')">🩺</span>
+            </div>
+            <!-- Symbols -->
+            <div class="emoji-section" data-category="symbols">
+                <span class="emoji-item" onclick="insertEmoji('❤️')">❤️</span>
+                <span class="emoji-item" onclick="insertEmoji('🧡')">🧡</span>
+                <span class="emoji-item" onclick="insertEmoji('💛')">💛</span>
+                <span class="emoji-item" onclick="insertEmoji('💚')">💚</span>
+                <span class="emoji-item" onclick="insertEmoji('💙')">💙</span>
+                <span class="emoji-item" onclick="insertEmoji('💜')">💜</span>
+                <span class="emoji-item" onclick="insertEmoji('🖤')">🖤</span>
+                <span class="emoji-item" onclick="insertEmoji('🤍')">🤍</span>
+                <span class="emoji-item" onclick="insertEmoji('🤎')">🤎</span>
+                <span class="emoji-item" onclick="insertEmoji('💔')">💔</span>
+                <span class="emoji-item" onclick="insertEmoji('❣️')">❣️</span>
+                <span class="emoji-item" onclick="insertEmoji('💕')">💕</span>
+                <span class="emoji-item" onclick="insertEmoji('💞')">💞</span>
+                <span class="emoji-item" onclick="insertEmoji('💓')">💓</span>
+                <span class="emoji-item" onclick="insertEmoji('💗')">💗</span>
+                <span class="emoji-item" onclick="insertEmoji('💖')">💖</span>
+                <span class="emoji-item" onclick="insertEmoji('💘')">💘</span>
+                <span class="emoji-item" onclick="insertEmoji('💝')">💝</span>
+                <span class="emoji-item" onclick="insertEmoji('💟')">💟</span>
+                <span class="emoji-item" onclick="insertEmoji('☮️')">☮️</span>
+                <span class="emoji-item" onclick="insertEmoji('✝️')">✝️</span>
+                <span class="emoji-item" onclick="insertEmoji('☪️')">☪️</span>
+                <span class="emoji-item" onclick="insertEmoji('🕉️')">🕉️</span>
+                <span class="emoji-item" onclick="insertEmoji('☸️')">☸️</span>
+                <span class="emoji-item" onclick="insertEmoji('✡️')">✡️</span>
+                <span class="emoji-item" onclick="insertEmoji('🔯')">🔯</span>
+                <span class="emoji-item" onclick="insertEmoji('🕎')">🕎</span>
+                <span class="emoji-item" onclick="insertEmoji('☯️')">☯️</span>
+                <span class="emoji-item" onclick="insertEmoji('☦️')">☦️</span>
+                <span class="emoji-item" onclick="insertEmoji('🛐')">🛐</span>
+                <span class="emoji-item" onclick="insertEmoji('⛎')">⛎</span>
+                <span class="emoji-item" onclick="insertEmoji('♈')">♈</span>
+                <span class="emoji-item" onclick="insertEmoji('♉')">♉</span>
+                <span class="emoji-item" onclick="insertEmoji('♊')">♊</span>
+                <span class="emoji-item" onclick="insertEmoji('♋')">♋</span>
+                <span class="emoji-item" onclick="insertEmoji('♌')">♌</span>
+                <span class="emoji-item" onclick="insertEmoji('♍')">♍</span>
+                <span class="emoji-item" onclick="insertEmoji('♎')">♎</span>
+                <span class="emoji-item" onclick="insertEmoji('♏')">♏</span>
+                <span class="emoji-item" onclick="insertEmoji('♐')">♐</span>
+                <span class="emoji-item" onclick="insertEmoji('♑')">♑</span>
+                <span class="emoji-item" onclick="insertEmoji('♒')">♒</span>
+                <span class="emoji-item" onclick="insertEmoji('♓')">♓</span>
+                <span class="emoji-item" onclick="insertEmoji('🆔')">🆔</span>
+                <span class="emoji-item" onclick="insertEmoji('⚛️')">⚛️</span>
+                <span class="emoji-item" onclick="insertEmoji('🉑')">🉑</span>
+                <span class="emoji-item" onclick="insertEmoji('☢️')">☢️</span>
+                <span class="emoji-item" onclick="insertEmoji('☣️')">☣️</span>
+                <span class="emoji-item" onclick="insertEmoji('📴')">📴</span>
+                <span class="emoji-item" onclick="insertEmoji('📳')">📳</span>
+                <span class="emoji-item" onclick="insertEmoji('🈶')">🈶</span>
+                <span class="emoji-item" onclick="insertEmoji('🈚')">🈚</span>
+                <span class="emoji-item" onclick="insertEmoji('🈸')">🈸</span>
+                <span class="emoji-item" onclick="insertEmoji('🈺')">🈺</span>
+                <span class="emoji-item" onclick="insertEmoji('💮')">💮</span>
+                <span class="emoji-item" onclick="insertEmoji('🉐')">🉐</span>
+                <span class="emoji-item" onclick="insertEmoji('㊙️')">㊙️</span>
+                <span class="emoji-item" onclick="insertEmoji('㊗️')">㊗️</span>
+            </div>
+        </div>
+    </div>
+    <!-- REACTION POPUP -->
+    <div class="reaction-popup" id="reactionPopup">
+        <span class="reaction-option" onclick="addReaction('👍')">👍</span>
+        <span class="reaction-option" onclick="addReaction('❤️')">❤️</span>
+        <span class="reaction-option" onclick="addReaction('🎉')">🎉</span>
+        <span class="reaction-option" onclick="addReaction('👏')">👏</span>
+        <span class="reaction-option" onclick="addReaction('😂')">😂</span>
+        <span class="reaction-option" onclick="addReaction('😮')">😮</span>
+    </div>
+
+    <!-- DELETE CONFIRMATION DIALOG -->
+    <div class="delete-dialog" id="deleteDialog">
+        <div class="delete-dialog-box">
+            <h3 class="delete-dialog-title">Delete post?</h3>
+            <p class="delete-dialog-text">Are you sure you want to delete this post? This action cannot be undone.</p>
+            <div class="delete-dialog-buttons">
+                <button class="delete-dialog-btn cancel" onclick="closeDeleteDialog()">Cancel</button>
+                <button class="delete-dialog-btn confirm" onclick="deletePost()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHARE MODAL -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-box">
+            <h3 class="share-title">Share this post</h3>
+            <div class="share-options">
+                <div class="share-option" onclick="shareToLinkedIn()">
+                    <div class="share-option-icon" style="background: #0a66c2;">💼</div>
+                    <span class="share-option-text">Share to feed</span>
+                </div>
+                <div class="share-option" onclick="shareToMessages()">
+                    <div class="share-option-icon" style="background: #057642;">💬</div>
+                    <span class="share-option-text">Send in message</span>
+                </div>
+                <div class="share-option" onclick="copyLink()">
+                    <div class="share-option-icon" style="background: var(--hover-bg);">📋</div>
+                    <span class="share-option-text">Copy link</span>
+                </div>
+            </div>
+            <div class="share-link-box">
+                <input type="text" class="share-link-input" id="shareLinkInput" readonly>
+                <button class="share-copy-btn" onclick="copyLink()">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT POST MODAL -->
+    <div class="post-modal" id="editModal">
+        <div class="post-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit post</h3>
+                <span class="modal-close" onclick="closeEditModal()">✕</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <div class="post-avatar" id="editModalAvatar">👤</div>
+                    <div>
+                        <div style="font-weight: 600;" id="editModalName">John Doe</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">🌐 Anyone</div>
+                    </div>
+                </div>
+                <textarea class="modal-textarea" id="editTextarea" placeholder="What do you want to talk about?"></textarea>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="modal-action-btn" title="Add emoji" onclick="toggleEmojiPicker('editTextarea', this)">😊</button>
+                    <button class="modal-action-btn" title="Add photo" onclick="showToast('Cannot change media in edit')">📷</button>
+                </div>
+                <button class="post-submit-btn" id="editSubmitBtn" onclick="submitEdit()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SAVED POSTS PAGE -->
+    <div class="main-container hidden" id="savedPostsPage">
+        <div style="grid-column: 1 / -1; max-width: 640px; margin: 0 auto; width: 100%;">
+            <div class="card" style="margin-bottom: 16px;">
+                <div class="section-header">
+                    <h2 class="section-title">🔖 Saved Posts</h2>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary);">Posts you save will appear here</p>
+            </div>
+            <div id="savedPostsFeed"></div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast"></div>
+
+    <!-- GITHUB OAUTH MODAL -->
+    <div class="oauth-modal" id="githubOAuthModal">
+        <div class="oauth-window">
+            <div class="oauth-header">
+                <span class="oauth-header-icon">🐙</span>
+                <div class="oauth-header-text">
+                    <h3>GitHub</h3>
+                    <p>github.com</p>
+                </div>
+                <span class="oauth-close" onclick="closeGitHubOAuth()">✕</span>
+            </div>
+            <div class="oauth-body" id="oauthContent">
+                <div class="oauth-app-info">
+                    <div class="oauth-app-icon">in</div>
+                    <div class="oauth-app-details">
+                        <h4>LinkedIn</h4>
+                        <p>wants to access your GitHub account</p>
+                    </div>
+                </div>
+                
+                <div class="oauth-permissions">
+                    <h5>This application will be able to:</h5>
+                    <div class="oauth-permission-item">
+                        <span>👤</span>
+                        <span>Read your profile information</span>
+                    </div>
+                    <div class="oauth-permission-item">
+                        <span>📧</span>
+                        <span>Access your email address</span>
+                    </div>
+                    <div class="oauth-permission-item">
+                        <span>🔒</span>
+                        <span>Read your public repositories</span>
+                    </div>
+                </div>
+                
+                <p style="font-size: 14px; color: var(--text-secondary);">
+                    Authorizing will redirect you to: <strong>linkedin.com/auth/github/callback</strong>
+                </p>
+                
+                <div class="oauth-buttons">
+                    <button class="oauth-btn-cancel" onclick="closeGitHubOAuth()">Cancel</button>
+                    <button class="oauth-btn-authorize" onclick="authorizeGitHub()">Authorize LinkedIn</button>
+                </div>
+                
+                <p class="oauth-notice">
+                    Not signed in to GitHub? <a>You will be redirected to sign in first</a>
+                </p>
+            </div>
+            
+            <div class="oauth-loading" id="oauthLoading">
+                <div class="oauth-spinner"></div>
+                <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Connecting to GitHub...</p>
+                <p style="font-size: 14px; color: var(--text-secondary);">Please wait while we authenticate</p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script src="js/app.js"></script>
+</body>
+</html>

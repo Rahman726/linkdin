@@ -1,0 +1,28 @@
+# Backup files
+linkdin_backup.html
+*.backup
+*.bak
+
+# Python scripts
+*.py
+
+# Documentation (keep only in repo, not needed for deploy)
+FIREBASE_SETUP.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local env files
+.env
+.env.local
