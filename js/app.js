@@ -256,11 +256,12 @@
             }, 2000);
         }
 
-        // Close modal on background click
-        document.getElementById('githubOAuthModal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
-                closeGitHubOAuth();
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('githubOAuthModal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    closeGitHubOAuth();
+                }
+            });
         });
 
         // ===== DATA =====
